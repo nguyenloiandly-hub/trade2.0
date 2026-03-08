@@ -23,7 +23,7 @@ export function aggregateMTF(scores: TimeframeScore[]): { longPercent: number; s
     totalWeight += w;
   });
   
-  void totalWeight;
+  void totalWeight; // reserved for future per-weight normalization
   
   const total = weightedBull + weightedBear;
   if (total === 0) return { longPercent: 50, shortPercent: 50, weightedBull: 0, weightedBear: 0 };
