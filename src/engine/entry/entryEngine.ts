@@ -1,6 +1,5 @@
-import { SupportResistanceZone, CandlePattern, TimeframeScore, Timeframe } from '../../types';
-
-const HIGHER_TFS: Timeframe[] = ['4h', '6h', '8h', '12h', '1d'];
+import { SupportResistanceZone, CandlePattern, TimeframeScore } from '../../types';
+import { HIGHER_TIMEFRAMES } from '../constants';
 
 export function validateEntry(
   currentPrice: number,
@@ -14,7 +13,7 @@ export function validateEntry(
 ): { direction: 'LONG' | 'SHORT' | null; reason: string[] } {
   const reasons: string[] = [];
   
-  const higherTFScores = tfScores.filter(s => HIGHER_TFS.includes(s.timeframe));
+  const higherTFScores = tfScores.filter(s => HIGHER_TIMEFRAMES.includes(s.timeframe));
   
   const htfBullish = higherTFScores.filter(s => s.bullScore > s.bearScore + 10).length;
   const htfBearish = higherTFScores.filter(s => s.bearScore > s.bullScore + 10).length;

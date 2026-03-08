@@ -13,6 +13,17 @@ import NewsPanel from './components/NewsPanel/NewsPanel';
 
 type TabType = 'signals' | 'analysis' | 'trendlines' | 'news';
 
+/** Simple keyword-based sentiment scorer for headlines without an NLP API */
+function scoreHeadlineSentiment(headline: string): number {
+  const text = headline.toLowerCase();
+  const bullishKeywords = ['surge', 'rally', 'bullish', 'buy', 'soar', 'jump', 'gain', 'high', 'up', 'rise', 'growth', 'breakout', 'boom', 'positive', 'recover', 'adoption', 'launch'];
+  const bearishKeywords = ['crash', 'dump', 'bearish', 'sell', 'drop', 'fall', 'decline', 'low', 'down', 'loss', 'plunge', 'bear', 'negative', 'ban', 'hack', 'fraud', 'fear', 'warning'];
+  let score = 0;
+  bullishKeywords.forEach(kw => { if (text.includes(kw)) score += 0.2; });
+  bearishKeywords.forEach(kw => { if (text.includes(kw)) score -= 0.2; });
+  return Math.max(-1, Math.min(1, score));
+}
+
 export default function App() {
   const [symbol, setSymbol] = useState('BTCUSDT');
   const [inputSymbol, setInputSymbol] = useState('BTCUSDT');
@@ -33,7 +44,7 @@ export default function App() {
       
       const newsItems: NewsItem[] = rawNews.map(n => ({
         ...n,
-        sentimentScore: 0,
+        sentimentScore: scoreHeadlineSentiment(n.headline),
         impactScore: 0.5,
       }));
       

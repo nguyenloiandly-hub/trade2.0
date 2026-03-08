@@ -49,12 +49,16 @@ export function analyzeTrend(candles: Candle[]): TrendAnalysis {
   const currentPrice = closes[closes.length - 1];
   const priceAboveEMA50 = currentPrice > ema50;
   
-  const lastSwingHigh = swingHighs.length > 0 ? swingHighs[swingHighs.length - 1].price : Infinity;
-  const lastSwingLow = swingLows.length > 0 ? swingLows[swingLows.length - 1].price : 0;
-  const bosDetected = currentPrice > lastSwingHigh || currentPrice < lastSwingLow;
+  // BOS detection: only valid when there are swing points to reference
+  const lastSwingHigh = swingHighs.length > 0 ? swingHighs[swingHighs.length - 1].price : null;
+  const lastSwingLow = swingLows.length > 0 ? swingLows[swingLows.length - 1].price : null;
+  const bosDetected =
+    (lastSwingHigh !== null && currentPrice > lastSwingHigh) ||
+    (lastSwingLow !== null && currentPrice < lastSwingLow);
   
-  const cochDetected = (hasHH && hasHL && currentPrice < lastSwingLow) ||
-    (hasLH && hasLL && currentPrice > lastSwingHigh);
+  const cochDetected =
+    (hasHH && hasHL && lastSwingLow !== null && currentPrice < lastSwingLow) ||
+    (hasLH && hasLL && lastSwingHigh !== null && currentPrice > lastSwingHigh);
   
   let state: TrendState;
   if ((hasHH && hasHL) && priceAboveEMA50 && ema50Slope > 0.0001) {

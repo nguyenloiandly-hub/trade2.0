@@ -1,4 +1,5 @@
 import { TimeframeScore, SupportResistanceZone, CandlePattern, SentimentSummary } from '../../types';
+import { HIGHER_TIMEFRAMES } from '../constants';
 
 export function calculateConfidence(
   tfScores: TimeframeScore[],
@@ -36,7 +37,7 @@ export function calculateConfidence(
   else if (sentiment.bias === (direction === 'LONG' ? 'bearish' : 'bullish')) confidence -= 5;
   
   const higherTFAgainst = tfScores.filter(s =>
-    ['4h', '6h', '8h', '12h', '1d'].includes(s.timeframe) &&
+    HIGHER_TIMEFRAMES.includes(s.timeframe) &&
     ((direction === 'LONG' && s.bearScore > s.bullScore + 10) || (direction === 'SHORT' && s.bullScore > s.bearScore + 10))
   ).length;
   confidence -= higherTFAgainst * 8;

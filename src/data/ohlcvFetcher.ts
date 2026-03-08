@@ -34,12 +34,15 @@ export async function fetchAllTimeframes(symbol: string): Promise<Partial<Record
   const timeframes: Timeframe[] = ['15m', '1h', '2h', '4h', '6h', '8h', '12h', '1d'];
   const results: Partial<Record<Timeframe, Candle[]>> = {};
   
-  await Promise.allSettled(
-    timeframes.map(async (tf) => {
-      const candles = await fetchOHLCV(symbol, tf);
-      results[tf] = candles;
-    })
+  const settlements = await Promise.allSettled(
+    timeframes.map(tf => fetchOHLCV(symbol, tf).then(candles => ({ tf, candles })))
   );
+  
+  settlements.forEach(result => {
+    if (result.status === 'fulfilled') {
+      results[result.value.tf] = result.value.candles;
+    }
+  });
   
   return results;
 }

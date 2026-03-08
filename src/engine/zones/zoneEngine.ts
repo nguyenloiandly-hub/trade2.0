@@ -1,8 +1,10 @@
 import { Candle, SupportResistanceZone, SwingPoint, Timeframe, PivotLevels } from '../../types';
+import { ZONE_CLUSTER_ATR_MULTIPLIER } from '../constants';
 
 function clusterLevels(levels: number[], atr: number, timeframe: Timeframe): SupportResistanceZone[] {
   if (levels.length === 0) return [];
-  const tolerance = atr * 0.5;
+  // Tolerance is mid-range of the spec'd 0.25–0.6 ATR window
+  const tolerance = atr * ZONE_CLUSTER_ATR_MULTIPLIER;
   const sorted = [...levels].sort((a, b) => a - b);
   const zones: SupportResistanceZone[] = [];
   let cluster: number[] = [sorted[0]];

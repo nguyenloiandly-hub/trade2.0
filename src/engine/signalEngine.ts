@@ -11,6 +11,7 @@ import { aggregateMTF } from './aggregation/mtfAggregation';
 import { validateEntry } from './entry/entryEngine';
 import { calculateRisk } from './risk/riskEngine';
 import { calculateConfidence } from './confidence/confidenceEngine';
+import { ZONE_MERGE_MIN_WIDTH } from './constants';
 
 export function runSignalEngine(
   symbol: string,
@@ -137,7 +138,7 @@ function mergeZones(zones: SupportResistanceZone[], currentPrice: number, type: 
   const merged: SupportResistanceZone[] = [];
   
   for (const z of sorted) {
-    const existing = merged.find(m => Math.abs((m.low + m.high) / 2 - (z.low + z.high) / 2) < (m.high - m.low) * 2 + 50);
+    const existing = merged.find(m => Math.abs((m.low + m.high) / 2 - (z.low + z.high) / 2) < (m.high - m.low) * 2 + ZONE_MERGE_MIN_WIDTH);
     if (existing) {
       existing.low = Math.min(existing.low, z.low);
       existing.high = Math.max(existing.high, z.high);

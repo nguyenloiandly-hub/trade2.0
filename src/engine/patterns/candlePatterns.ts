@@ -42,11 +42,13 @@ export function detectPatterns(candles: Candle[], timeframe: Timeframe, supportZ
     patterns.push({ name: 'Inverted Hammer', timeframe, strength, direction: 'bullish', candleIndex: candles.length - 1 });
   }
   
-  // Shooting Star
-  const recentUptrend = prev.close > prev2.close && prev2.close > (candles[candles.length - 4]?.close ?? 0);
-  if (s.upperWick >= s.body * 2 && s.lowerWick <= s.body * 0.5 && s.bodyRatio <= 0.35 && (nearResistance || recentUptrend)) {
-    const strength = nearResistance ? 0.75 : 0.4;
-    patterns.push({ name: 'Shooting Star', timeframe, strength, direction: 'bearish', candleIndex: candles.length - 1 });
+  // Shooting Star (needs at least 4 candles)
+  if (candles.length >= 4) {
+    const recentUptrend = prev.close > prev2.close && prev2.close > candles[candles.length - 4].close;
+    if (s.upperWick >= s.body * 2 && s.lowerWick <= s.body * 0.5 && s.bodyRatio <= 0.35 && (nearResistance || recentUptrend)) {
+      const strength = nearResistance ? 0.75 : 0.4;
+      patterns.push({ name: 'Shooting Star', timeframe, strength, direction: 'bearish', candleIndex: candles.length - 1 });
+    }
   }
   
   // Doji
