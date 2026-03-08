@@ -34,7 +34,7 @@ export function validateEntry(
     higherTFScores.filter(s => s.bullScore > s.bearScore).forEach(s => {
       reasons.push(`${s.timeframe} bullish (${s.bullScore}/${s.bearScore})`);
     });
-    if (nearestSupport) reasons.push(`Gần support zone ${nearestSupport.low.toFixed(2)}-${nearestSupport.high.toFixed(2)}`);
+    if (nearestSupport) reasons.push(`Near support zone ${nearestSupport.low.toFixed(2)}-${nearestSupport.high.toFixed(2)}`);
     reasons.push(`Pattern: ${bullishPatterns.map(p => p.name).join(', ')}`);
     return { direction: 'LONG', reason: reasons };
   }
@@ -43,10 +43,10 @@ export function validateEntry(
     higherTFScores.filter(s => s.bearScore > s.bullScore).forEach(s => {
       reasons.push(`${s.timeframe} bearish (${s.bearScore}/${s.bullScore})`);
     });
-    if (nearestResistance) reasons.push(`Gần resistance zone ${nearestResistance.low.toFixed(2)}-${nearestResistance.high.toFixed(2)}`);
+    if (nearestResistance) reasons.push(`Near resistance zone ${nearestResistance.low.toFixed(2)}-${nearestResistance.high.toFixed(2)}`);
     reasons.push(`Pattern: ${bearishPatterns.map(p => p.name).join(', ')}`);
     return { direction: 'SHORT', reason: reasons };
   }
   
-  return { direction: null, reason: ['Không đủ điều kiện vào lệnh'] };
+  return { direction: null, reason: ['Entry conditions not met'] };
 }

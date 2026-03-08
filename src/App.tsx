@@ -114,7 +114,7 @@ export default function App() {
                 }`}>{signal.confidence}%</div>
               </div>
               <SignalCard signal={signal} />
-              {signal.entryPlan && <EntryPlanCard plan={signal.entryPlan} currentPrice={signal.currentPrice} />}
+              {signal.entryPlan && <EntryPlanCard plan={signal.entryPlan} />}
             </>
           ) : loading ? (
             <div className="text-gray-500 text-center mt-10">Analyzing...</div>

@@ -14,16 +14,12 @@ const TF_WEIGHTS: Record<Timeframe, number> = {
 export function aggregateMTF(scores: TimeframeScore[]): { longPercent: number; shortPercent: number; weightedBull: number; weightedBear: number } {
   let weightedBull = 0;
   let weightedBear = 0;
-  let totalWeight = 0;
   
   scores.forEach(s => {
     const w = TF_WEIGHTS[s.timeframe];
     weightedBull += s.bullScore * w;
     weightedBear += s.bearScore * w;
-    totalWeight += w;
   });
-  
-  void totalWeight; // reserved for future per-weight normalization
   
   const total = weightedBull + weightedBear;
   if (total === 0) return { longPercent: 50, shortPercent: 50, weightedBull: 0, weightedBear: 0 };

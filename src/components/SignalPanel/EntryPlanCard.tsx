@@ -1,6 +1,6 @@
 import { EntryPlan } from '../../types';
-interface Props { plan: EntryPlan; currentPrice: number; }
-export default function EntryPlanCard({ plan, currentPrice: _currentPrice }: Props) {
+interface Props { plan: EntryPlan; }
+export default function EntryPlanCard({ plan }: Props) {
   return (
     <div className={`rounded p-3 text-xs border ${plan.direction === 'LONG' ? 'bg-green-900/20 border-green-700' : 'bg-red-900/20 border-red-700'}`}>
       <div className={`font-bold text-sm mb-2 ${plan.direction === 'LONG' ? 'text-green-400' : 'text-red-400'}`}>

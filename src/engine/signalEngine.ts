@@ -94,16 +94,16 @@ export function runSignalEngine(
         longPercent, entryDirection, entryPlan.rr, atr, currentPrice
       );
     } else {
-      warnings.push('RR không hợp lệ (< 1.2), không phát tín hiệu');
+      warnings.push('Invalid RR (< 1.2), signal not emitted');
     }
   }
   
   const atrPct = atr / currentPrice;
-  if (atrPct < 0.002) warnings.push('ATR quá thấp - thị trường đi ngang chặt');
+  if (atrPct < 0.002) warnings.push('ATR too low - tight sideways market');
   if (sentiment.bias !== 'neutral') {
     if ((marketBias === 'LONG' && sentiment.bias === 'bearish') ||
         (marketBias === 'SHORT' && sentiment.bias === 'bullish')) {
-      warnings.push('Tin tức ngược chiều tín hiệu kỹ thuật');
+      warnings.push('News sentiment contradicts technical signal');
     }
   }
   
